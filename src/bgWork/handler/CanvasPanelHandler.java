@@ -138,7 +138,7 @@ public class CanvasPanelHandler extends PanelHandler
 
 	}
 
-	void selectByClick(MouseEvent e)//------------------------------------------------------------
+	void selectByClick(MouseEvent e)//---------------------------------------------------------------------
 	{
 		boolean isSelect = false;
 		selectComp = new Vector <>();
