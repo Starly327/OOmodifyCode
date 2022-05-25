@@ -111,22 +111,24 @@ public class CanvasPanelHandler extends PanelHandler
 		contextPanel.updateUI();
 	}
 
-	void selectedLine(DragPack dp){//------------------------------------------------
+
+	void selectedLine(JPanel clickObj, MouseEvent e){//------------------------------------------------2
+		int port = new AreaDefine().getArea(clickObj.getLocation(),clickObj.getSize(),e.getPoint());
 		for (int i = 0; i < allLine.size(); i++){
 			JPanel funcObj = allLine.get(i);
 			switch (core.isLine(funcObj))
 				{
 					case 0:
-						//(AssociationLine)funcObj;
+						((AssociationLine)funcObj).changeColor(clickObj,port);
 						break;
 					case 1:
-						//CompositionLine temp = (CompositionLine)funcObj;
+						((CompositionLine) funcObj).changeColor(clickObj,port);
 						break;
 					case 2:
-						//((GeneralizationLine) funcObj).setConnect(dPack);
+						((GeneralizationLine) funcObj).changeColor(clickObj,port);
 						break;
 					case 3:
-						((DependencyLine) funcObj).changeColor(dp);
+						((DependencyLine) funcObj).changeColor(clickObj,port);
 						break;
 					default:
 						break;
@@ -145,20 +147,20 @@ public class CanvasPanelHandler extends PanelHandler
 			if (isInside(members.elementAt(i), e.getPoint()) == true
 					&& isSelect == false)
 			{
-				//selectedLine(e);
+				selectedLine(members.elementAt(i),e);
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
-					case 0:
+					case 0://basicClass
 						((BasicClass) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
 						break;
-					case 1:
+					case 1://useCase
 						((UseCase) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
 						break;
-					case 5:
+					case 5://group
 						Point p = e.getPoint();
 						p.x -= members.elementAt(i).getLocation().x;
 						p.y -= members.elementAt(i).getLocation().y;
@@ -182,6 +184,7 @@ public class CanvasPanelHandler extends PanelHandler
 			}
 			else
 			{
+				
 				setSelectAllType(members.elementAt(i), false);
 			}
 		}

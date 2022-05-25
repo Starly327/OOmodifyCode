@@ -32,6 +32,7 @@ public class DependencyLine extends JPanel
 	boolean				isSelect		= false;
 	int					selectBoxSize	= 5;
 	CanvasPanelHandler	cph;
+	Boolean 			redraw 			= false;
 
 	public DependencyLine(CanvasPanelHandler cph)
 	{
@@ -53,8 +54,11 @@ public class DependencyLine extends JPanel
 				fp.y - this.getLocation().y);
 		tpPrime = new Point(tp.x - this.getLocation().x,
 				tp.y - this.getLocation().y);
-		g.setColor(Color.BLACK);
-		//g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
+		if(redraw)
+			g.setColor(Color.PINK);
+		else
+			g.setColor(Color.BLACK);
+		
 		drawDashedLine(g,fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
 		paintArrow(g, tpPrime);
 		if (isSelect == true)
@@ -224,19 +228,18 @@ public class DependencyLine extends JPanel
 		this.isSelect = isSelect;
 	}
 
-	public void changeColor(DragPack dp){
-		
-		Point mtp = dp.getTo();
-		Point ftp = dp.getFrom();
-		JPanel fromObj = (JPanel) dp.getToObj();
-		JPanel toObj = (JPanel) dp.getToObj();
-		int clickSide = new AreaDefine().getArea(fromObj.getLocation(), fromObj.getSize(), ftp);
-		//System.out.println(clickObj+"			"+this.from+"		"+this.to);
-		System.out.println(clickSide+"		"+this.fromSide+"		"+this.toSide);
-		//if(clickObj==this.from || clickObj==this.to)
-			//if(clickSide==this.fromSide || clickSide==this.toSide)
-				//System.out.println("hello!!!");
-		
-				
+	public void changeColor(JPanel clickObj,int port){//2
+
+		if(clickObj==this.from && port==this.fromSide){
+			this.redraw = true;
+			repaint();
+		}else if(clickObj==this.to && port==this.toSide){
+			this.redraw = true;
+			repaint();
+		}else{
+			this.redraw = false;
+			repaint();
+		}
 	}
+	
 }
