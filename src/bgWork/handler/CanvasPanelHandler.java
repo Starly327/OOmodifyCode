@@ -113,7 +113,13 @@ public class CanvasPanelHandler extends PanelHandler
 
 
 	void selectedLine(JPanel clickObj, MouseEvent e){//------------------------------------------------2
-		int port = new AreaDefine().getArea(clickObj.getLocation(),clickObj.getSize(),e.getPoint());
+		int port;
+		if(clickObj==null)
+			port = -1;
+		else{
+			port = new AreaDefine().getArea(clickObj.getLocation(),clickObj.getSize(),e.getPoint());
+		}
+		
 		for (int i = 0; i < allLine.size(); i++){
 			JPanel funcObj = allLine.get(i);
 			switch (core.isLine(funcObj))
@@ -134,20 +140,20 @@ public class CanvasPanelHandler extends PanelHandler
 						break;
 				}
 		}
-			
-
 	}
 
 	void selectByClick(MouseEvent e)//---------------------------------------------------------------------
 	{
 		boolean isSelect = false;
 		selectComp = new Vector <>();
+		boolean flag = false;//2
 		for (int i = 0; i < members.size(); i ++)
 		{
 			if (isInside(members.elementAt(i), e.getPoint()) == true
 					&& isSelect == false)
 			{
-				selectedLine(members.elementAt(i),e);
+				selectedLine(members.elementAt(i),e);//2
+				flag = true;//2
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
 					case 0://basicClass
@@ -187,6 +193,8 @@ public class CanvasPanelHandler extends PanelHandler
 				
 				setSelectAllType(members.elementAt(i), false);
 			}
+			if(flag==false)//2
+				selectedLine(null,e);
 		}
 		repaintComp();
 	}
